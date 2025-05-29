@@ -3,6 +3,9 @@ const port = process.env.PORT || 8000;
 const statusCode = process.env.STATUS_CODE || 200;
 
 function handler(req, res) {
+  const isHealthCheck = req.url.startsWith("/health");
+  res.statusCode = isHealthCheck ? 200 : statusCode;
+
   console.log("Request:", req.method, req.url);
 
   console.log("Headers:");
@@ -11,7 +14,6 @@ function handler(req, res) {
   console.groupEnd();
 
   console.log("=================");
-  res.statusCode = req.url.startsWith("/health") ? 200 : statusCode;
   res.end("");
 }
 

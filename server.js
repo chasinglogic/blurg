@@ -1,5 +1,6 @@
 const http = require("http");
 const port = process.env.PORT || 8000;
+const statusCode = process.env.STATUS_CODE || 200;
 
 function handler(req, res) {
   console.log("Request:", req.method, req.url);
@@ -10,7 +11,7 @@ function handler(req, res) {
   console.groupEnd();
 
   console.log("=================");
-  res.statusCode = 503;
+  res.statusCode = req.path.startsWith("/health") ? 200 : statusCode;
   res.end("");
 }
 

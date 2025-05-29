@@ -11,7 +11,7 @@ function handler(req, res) {
   console.groupEnd();
 
   console.log("=================");
-  res.statusCode = req.path.startsWith("/health") ? 200 : statusCode;
+  res.statusCode = req.url.startsWith("/health") ? 200 : statusCode;
   res.end("");
 }
 

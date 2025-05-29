@@ -1,4 +1,6 @@
-FROM node:lts
+FROM node:lts-alpine
+
+RUN apk upgrade
 
 RUN mkdir /app
 WORKDIR /app

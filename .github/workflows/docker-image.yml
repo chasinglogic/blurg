@@ -2,14 +2,26 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            chasinglogic/blurg
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=raw,value=latest
+            type=edge,branch=main
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -18,9 +30,10 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: chasinglogic/blurg:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

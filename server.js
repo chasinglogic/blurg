@@ -37,3 +37,9 @@ function handler(req, res) {
 http.createServer(handler).listen(port, () => {
   console.log(`App is running on port ${port}`);
 });
+
+process.on("SIGINT", (_signal) => {
+  console.log("*** Signal received ****");
+  console.log("*** App is closing ****");
+  process.exit(0);
+});

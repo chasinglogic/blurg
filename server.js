@@ -3,12 +3,17 @@ const port = process.env.PORT || 8000;
 const statusCode = process.env.STATUS_CODE || 200;
 const respondWithHeaders =
   (process.env.RESPOND_WITH_HEADERS || "true") === "true";
+const silentHealthChecks =
+  (process.env.SILENCE_HEALTH_CHECKS || "false") === "true";
 
 function handler(req, res) {
   const isHealthCheck = req.url.startsWith("/health");
   res.statusCode = isHealthCheck ? 200 : statusCode;
 
-  console.log("Request:", req.method, req.url);
+  if (silentHealthChecks && isHealthCheck) {
+    res.end("done");
+    return;
+  }
 
   const info = {
     request: {
